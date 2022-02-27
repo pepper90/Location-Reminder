@@ -75,6 +75,7 @@ dependencies {
     //Koin
     implementation "io.insert-koin:koin-core:$koinVersion"
     implementation "io.insert-koin:koin-android:$koinVersion"
+    implementation "io.insert-koin:koin-androidx-navigation:$koinVersion"
 
 
     // Dependencies for local unit tests
@@ -111,8 +112,12 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-core:$testMockitoVersion"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
     testImplementation "io.insert-koin:koin-test:$koinVersion"
+    testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
 
     //Maps & Geofencing
     implementation "com.google.android.gms:play-services-location:$locationVersion"
     implementation "com.google.android.gms:play-services-maps:$mapsVersion"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
 }
