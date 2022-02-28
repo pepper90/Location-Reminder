@@ -7,14 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -81,6 +79,7 @@ class AuthenticationFragment : Fragment() {
     }
 
     private fun launchSignInFlow() {
+
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()
         )
@@ -88,6 +87,8 @@ class AuthenticationFragment : Fragment() {
         registerForActivityResult.launch(AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setTheme(R.style.AuthTheme)
+            .setLogo(R.drawable.map)
             .build())
     }
 }
