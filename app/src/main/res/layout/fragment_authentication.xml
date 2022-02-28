@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="fragment"
+            type="com.udacity.project4.authentication.AuthenticationFragment" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".authentication.AuthenticationActivity">
+        tools:context=".authentication.AuthenticationFragment">
 
         <TextView
             android:layout_width="wrap_content"

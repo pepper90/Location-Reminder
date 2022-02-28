@@ -6,10 +6,12 @@
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_authentication.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_reminder_description.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_reminders.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/fragment_authentication.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/fragment_reminders.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/fragment_save_reminder.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/fragment_select_location.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/it_reminder.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidProjects/starter/app/src/main/res/menu/main_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

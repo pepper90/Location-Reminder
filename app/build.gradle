@@ -121,4 +121,5 @@ dependencies {
 
     //Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
+    implementation "com.firebaseui:firebase-ui-auth:$FirebaseAuthVersion"
 }

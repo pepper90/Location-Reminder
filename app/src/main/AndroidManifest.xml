@@ -37,8 +37,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${GMP_KEY}" />
 
-        <activity android:name=".authentication.AuthenticationActivity">
-        </activity>
         <activity android:name=".locationreminders.RemindersActivity"
             android:exported="true">
             <intent-filter>
