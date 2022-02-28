@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/starter/app/src/main/res/drawable/ic_eye.xml" value="0.1" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_authentication.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_reminder_description.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/starter/app/src/main/res/layout/activity_reminders.xml" value="0.25416666666666665" />
