@@ -188,6 +188,7 @@ class SelectLocationFragment : BaseFragment() {
                     .title(getString(R.string.dropped_pin))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             )
+            myMarker?.showInfoWindow()
         }
     }
 
