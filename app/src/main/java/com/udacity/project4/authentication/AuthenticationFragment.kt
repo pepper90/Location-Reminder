@@ -61,8 +61,6 @@ class AuthenticationFragment : Fragment() {
             }
 
         }
-
-//        popUpBackStack()
     }
 
     private fun registerForSignInResult() {

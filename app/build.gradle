@@ -122,4 +122,7 @@ dependencies {
     //Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebaseVersion")
     implementation "com.firebaseui:firebase-ui-auth:$FirebaseAuthVersion"
+
+    // required to avoid crash on Android 12 API 31
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 }
