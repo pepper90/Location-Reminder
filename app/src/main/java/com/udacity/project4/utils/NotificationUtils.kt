@@ -38,9 +38,6 @@ fun sendNotification(context: Context, reminderDataItem: ReminderDataItem) {
         .addParentStack(ReminderDescriptionActivity::class.java)
         .addNextIntent(intent)
 
-//    val notificationPendingIntent = stackBuilder
-//        .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
-
     val notificationPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         stackBuilder
             .getPendingIntent(getUniqueId(), PendingIntent.FLAG_MUTABLE)
