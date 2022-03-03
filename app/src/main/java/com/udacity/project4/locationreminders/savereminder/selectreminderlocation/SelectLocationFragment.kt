@@ -1,6 +1,5 @@
 package com.udacity.project4.locationreminders.savereminder.selectreminderlocation
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,6 +19,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -44,6 +44,8 @@ class SelectLocationFragment : BaseFragment() {
 
     companion object {
         const val TAG = "SelectLocationFragment"
+        const val GEOFENCE_EVENT = "GEOFENCE_EVENT"
+        internal const val GEOFENCE_RADIUS = 50f
     }
 
     //Use Koin to get the view model of the SaveReminder
@@ -58,6 +60,8 @@ class SelectLocationFragment : BaseFragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var myMarker: Marker? = null
     private var myPoi: PointOfInterest? = null
+
+    lateinit var geofencingClient: GeofencingClient
 
     /*
     * MAP CALLBACK
@@ -89,6 +93,7 @@ class SelectLocationFragment : BaseFragment() {
             Manifest.permission.ACCESS_FINE_LOCATION
         )
 
+        @Suppress("DEPRECATION")
         if (shouldProvideRationale) {
             snackbarOne.setAction(R.string.settings) {
                 requestPermissions(
@@ -141,14 +146,19 @@ class SelectLocationFragment : BaseFragment() {
         setDisplayHomeAsUpEnabled(true)
 
         //Sets map container inside fragment
-        val mapFragment = SupportMapFragment.newInstance()
-        childFragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit()
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(callback)
 
+        //initialize location provider
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-//        TODO: call this function after the user confirms on the selected location
-        onLocationSelected()
+        //Initialize geofence client
+        geofencingClient = LocationServices.getGeofencingClient(requireActivity())
+
+        //Send location to viewModel
+        binding.saveBtn.setOnClickListener {
+            onLocationSelected()
+        }
 
         return binding.root
     }
@@ -168,9 +178,11 @@ class SelectLocationFragment : BaseFragment() {
     }
 
     private fun onLocationSelected() {
-        //        TODO: When the user confirms on the selected location,
-        //         send back the selected location details to the view model
-        //         and navigate back to the previous fragment to save the reminder and add the geofence
+        _viewModel.selectedPOI.value = myPoi
+        _viewModel.latitude.value = myPoi?.latLng?.latitude
+        _viewModel.longitude.value = myPoi?.latLng?.longitude
+        _viewModel.reminderSelectedLocationStr.value = myPoi?.name
+        findNavController().popBackStack()
     }
 
     /*
@@ -219,6 +231,10 @@ class SelectLocationFragment : BaseFragment() {
                             val lat = location.latitude
                             val long = location.longitude
                             val currentPosition = LatLng(lat, long)
+                            val title = createTitle(currentPosition)
+
+                            myPoi = PointOfInterest(currentPosition, title, title)
+
                             myMarker = map.addMarker(
                                 MarkerOptions()
                                     .position(currentPosition)
@@ -277,5 +293,13 @@ class SelectLocationFragment : BaseFragment() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::snackbarOne.isInitialized && ::snackbarTwo.isInitialized) {
+            snackbarOne.dismiss(); @Suppress("DEPRECATION")
+            snackbarTwo.dismiss()
+        }
     }
 }

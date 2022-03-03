@@ -50,7 +50,7 @@ class SaveReminderFragment : BaseFragment() {
             val latitude = _viewModel.latitude.value
             val longitude = _viewModel.longitude.value
 
-            val newReminder = ReminderDataItem(
+            val reminderDTO = ReminderDataItem(
                 title,
                 description,
                 location,
@@ -59,10 +59,9 @@ class SaveReminderFragment : BaseFragment() {
                 id = UUID.randomUUID().toString()
             )
 
-            _viewModel.validateAndSaveReminder(newReminder)
+            _viewModel.validateAndSaveReminder(reminderDTO)
 //            TODO: use the user entered reminder details to:
 //             1) add a geofencing request
-//             2) save the reminder to the local db
         }
     }
 
