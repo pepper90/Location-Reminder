@@ -1,5 +1,6 @@
 package com.udacity.project4.base
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -8,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
+@SuppressLint("NotifyDataSetChanged")
 abstract class BaseRecyclerViewAdapter<T>(private val callback: ((item: T) -> Unit)? = null) :
     RecyclerView.Adapter<DataBindingViewHolder<T>>() {
 
@@ -16,7 +18,7 @@ abstract class BaseRecyclerViewAdapter<T>(private val callback: ((item: T) -> Un
     /**
      * Returns the _items data
      */
-    private val items: List<T>?
+    private val items: List<T>
         get() = this._items
 
     override fun getItemCount() = _items.size

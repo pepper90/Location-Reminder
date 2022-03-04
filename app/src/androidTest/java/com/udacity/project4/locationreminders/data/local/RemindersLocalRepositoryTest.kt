@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
@@ -25,6 +24,66 @@ import org.junit.runner.RunWith
 @MediumTest
 class RemindersLocalRepositoryTest {
 
-//    TODO: Add testing implementation to the RemindersLocalRepository.kt
+    private lateinit var repository: RemindersLocalRepository
+    private lateinit var database: RemindersDatabase
 
+    private val newReminder = ReminderDTO("title", "description", "location", 1.1, 2.2)
+
+    @get:Rule
+    var instantExecutorRule= InstantTaskExecutorRule()
+
+    @Before
+    fun setupDb() {
+        database = Room.inMemoryDatabaseBuilder(
+            ApplicationProvider.getApplicationContext(),
+            RemindersDatabase::class.java
+        )
+            .allowMainThreadQueries()
+            .build()
+
+        repository =
+            RemindersLocalRepository(
+                database.reminderDao(),
+                Dispatchers.Main
+            )
+    }
+
+    @After
+    fun cleanUp() {
+        database.close()
+    }
+
+    @Test
+    fun saveTask_retrievesTask() = runBlocking {
+        // GIVEN - A new reminder saved in the database.
+        repository.saveReminder(newReminder)
+
+        // WHEN  - Reminder retrieved by ID.
+        val result = repository.getReminder(newReminder.id)
+
+        // THEN - Same reminder is returned.
+        assertThat(result is Result.Success, `is`(true))
+        result as Result.Success
+
+        assertThat(result.data.title, `is`("title"))
+        assertThat(result.data.description, `is`("description"))
+        assertThat(result.data.location, `is`("location"))
+        assertThat(result.data.latitude, `is`(1.1))
+        assertThat(result.data.longitude, `is`(2.2))
+    }
+
+    @Test
+    fun deleteReminders_returnsError() = runBlocking {
+        // GIVEN - Delete all reminders from database.
+        repository.deleteAllReminders()
+
+        // WHEN  - Try to retrieve reminder by ID.
+        val result = repository.getReminder(newReminder.id)
+
+        // THEN - Return an error
+        assertThat(result is Result.Error, `is`(true))
+        result as Result.Error
+
+        assertThat(result.message, `is`("Reminder not found!"))
+    }
 }

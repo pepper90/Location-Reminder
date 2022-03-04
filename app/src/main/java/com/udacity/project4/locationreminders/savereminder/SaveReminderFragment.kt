@@ -29,13 +29,11 @@ import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSaveReminderBinding
-import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationFragment
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
-import java.util.*
 
 @SuppressLint("UnspecifiedImmutableFlag")
 class SaveReminderFragment : BaseFragment() {
@@ -52,8 +50,8 @@ class SaveReminderFragment : BaseFragment() {
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSaveReminderBinding
 
-    private val runningQOrLater = android.os.Build.VERSION.SDK_INT >=
-            android.os.Build.VERSION_CODES.Q
+    private val runningQOrLater = Build.VERSION.SDK_INT >=
+            Build.VERSION_CODES.Q
     private lateinit var snackbar: Snackbar
 
     lateinit var geofencingClient: GeofencingClient
