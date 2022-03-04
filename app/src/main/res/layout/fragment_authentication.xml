@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="fragment"
-            type="com.udacity.project4.authentication.AuthenticationFragment" />
 
     </data>
 
