@@ -61,5 +61,5 @@ fun View.fadeOut() {
 fun createTitle(latLng: LatLng) : String{
     val titleLat = "%.2f".format(latLng.latitude)
     val titleLng = "%.2f".format(latLng.longitude)
-    return "$titleLat,$titleLng"
+    return "$titleLat, $titleLng"
 }

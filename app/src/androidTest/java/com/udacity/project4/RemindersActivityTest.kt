@@ -8,9 +8,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
@@ -22,8 +24,10 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -33,7 +37,7 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 
-@Suppress("USELESS_CAST")
+@Suppress("USELESS_CAST", "DEPRECATION")
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 //END TO END test to black box test the app
@@ -49,6 +53,12 @@ class RemindersActivityTest :
      * As we use Koin as a Service Locator Library to develop our code, we'll also use Koin to test our code.
      * at this step we will initialize Koin related code to be able to use it in out testing.
      */
+
+    @Rule
+    @JvmField
+    var activityRule: ActivityTestRule<RemindersActivity?>? =
+        ActivityTestRule(RemindersActivity::class.java)
+
     @Before
     fun init() {
         stopKoin()//stop the original app koin
@@ -116,9 +126,37 @@ class RemindersActivityTest :
         // Click save reminder button
         onView(withId(R.id.saveReminder)).perform(click())
 
+        // Toast test
+        onView(withText(R.string.reminder_saved)).inRoot(
+            withDecorView(not(activityRule?.activity?.window?.decorView)))
+            .check(matches(isDisplayed()))
+
         // Assert that title and description matches
         onView(withText("title")).check(matches(isDisplayed()))
         onView(withText("description")).check(matches(isDisplayed()))
+
+        activityScenario.close()
+    }
+
+    @Test
+    fun missingLocation_snackbarDisplayed() {
+        val activityScenario = launchActivity<RemindersActivity>()
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        val reminder = ReminderDTO("title", "description", "location", 1.1, 2.2)
+
+        // Add text and description & close keyboard
+        onView(withId(R.id.reminderTitle)).perform(typeText(reminder.title))
+        onView(withId(R.id.reminderDescription)).perform(typeText(reminder.description))
+        Espresso.closeSoftKeyboard()
+
+        // Click save reminder button
+        onView(withId(R.id.saveReminder)).perform(click())
+
+        // Check if snackbar is displayed
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(R.string.err_select_location)))
 
         activityScenario.close()
     }
